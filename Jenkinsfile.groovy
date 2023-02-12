@@ -14,7 +14,9 @@ pipeline {
         }
         stage('SonarQube analysis') {
             steps {
-                bat './gradlew sonarqube'
+                withSonarQubeEnv(installationName: 'sonar') {
+                    bat './gradlew sonarqube'
+                }
             }
         }
     }
