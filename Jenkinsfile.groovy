@@ -7,6 +7,16 @@ pipeline {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
   stages {
+
+    stage('Git Checkout') {
+      steps {
+        //enable remote triggers
+        script {
+          properties([pipelineTriggers([pollSCM('''* * * * *''')])])
+        }
+        git credentialsId: 'Jenkins', url: 'https://github.com/sieskas/example_api_spring_gradle'
+      }
+    }
     stage('build') {
       steps {
         bat './gradlew build'
