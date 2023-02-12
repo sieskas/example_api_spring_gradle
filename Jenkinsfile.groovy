@@ -1,23 +1,21 @@
 pipeline {
   agent any
   tools {
-    maven 'maven 3.9.0'
+    gradle 'gradle'
   }
   options {
     buildDiscarder(logRotator(numToKeepStr: '5'))
   }
   stages {
-    stage('Build') {
+    stage('build') {
       steps {
-        bat 'mvn surefire-report:report'
-        bat 'tree'
+        bat './gradlew build'
       }
     }
   }
   post {
     always {
-           publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'target/site', reportFiles: 'surefire-report.html', reportName: 'Surefire Report', reportTitles: '', useWrapperFileDirectly: true])
-
+      junit '**/*.xml'
     }
   }
 }

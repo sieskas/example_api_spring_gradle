@@ -2,6 +2,9 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.8'
     id 'io.spring.dependency-management' version '1.1.0'
+    id  'org.owasp.dependencycheck' version '7.1.0.1'
+    id  'jacoco'
+    id  'org.sonarqube' version '3.3'
 }
 
 group = 'com.example.springboot'
@@ -24,6 +27,22 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+sonarqube {
+    properties {
+        property("sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/jacoco/test/jacocoTestReport.xml")
+        property("sonar.dependencycheck.reportPath", "${buildDir}/reports/dependency-check-report.xml")
+        property("sonar.dependencycheck.htmlReportPath", "${buildDir}/reports/dependency-check-report.html")
+        property("sonar.exclusions", "")
+    }
+}
+
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        html.enabled true
+    }
 }
