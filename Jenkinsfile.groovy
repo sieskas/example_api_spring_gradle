@@ -13,9 +13,6 @@ pipeline {
             }
         }
         stage('DependencyCheck') {
-            when {
-                cron('0 20 * * *')
-            }
             steps {
                 bat './gradlew dependencyCheckUpdate dependencyCheckAnalyze'
             }
