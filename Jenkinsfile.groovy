@@ -15,7 +15,7 @@ pipeline {
         stage('SonarQube analysis') {
             steps {
                 withSonarQubeEnv(installationName: 'sonar') {
-                    bat './gradlew sonarqube'
+                    bat './gradlew sonarqube -x dependencyCheckAnalyze'
                 }
             }
         }

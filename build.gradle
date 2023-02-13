@@ -54,7 +54,7 @@ jacocoTestReport {
 
 sonarqube {
     properties {
-        property "sonar.projectName", "Spring Boot Example Gradle TEST"
+        property "sonar.projectName", "Spring Boot Example Gradle"
         property "sonar.java.coveragePlugin", "jacoco"
         property "sonar.dynamicAnalysis", "reuseReports"
         property "sonar.language", "java"
