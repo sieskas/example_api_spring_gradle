@@ -9,7 +9,17 @@ pipeline {
     stages {
         stage('build') {
             steps {
-                bat './gradlew clean build'
+                bat './gradlew build'
+            }
+        }
+        stage('Dependencycheck update') {
+            steps {
+                bat './gradlew dependencyCheckUpdate'
+            }
+        }
+        stage('Dependencycheck analyse') {
+            steps {
+                bat './gradlew dependencyCheckAnalyze'
             }
         }
         stage('SonarQube analysis') {
@@ -18,11 +28,6 @@ pipeline {
                     bat './gradlew sonarqube'
                 }
             }
-        }
-    }
-    post {
-        always {
-            junit '**/*.xml'
         }
     }
 }

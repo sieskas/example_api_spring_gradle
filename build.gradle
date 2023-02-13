@@ -50,8 +50,6 @@ jacocoTestReport {
         xml.enabled true
         html.enabled true
     }
-
-    finalizedBy dependencyCheckUpdate, dependencyCheckAnalyze // create pipline
 }
 
 sonarqube {
