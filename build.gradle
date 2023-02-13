@@ -7,6 +7,8 @@ plugins {
     id  'org.sonarqube' version '3.3'
 }
 
+apply plugin: 'org.owasp.dependencycheck'
+
 group = 'com.example.springboot'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
@@ -27,15 +29,28 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-sonarqube {
-    properties {
-        property("sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/jacoco/test/jacocoTestReport.xml")
-        property("sonar.dependencycheck.reportPath", "${buildDir}/reports/dependency-check-report.xml")
-        property("sonar.dependencycheck.htmlReportPath", "${buildDir}/reports/dependency-check-report.html")
-        property("sonar.exclusions", "")
+dependencyCheck {
+    format='ALL'
+    autoUpdate = false
+    if (System.env.OWASP_DIR) {
+        dataDirectory = "$System.env.OWASP_DATA_DIR"
     }
 }
 
+sonarqube {
+    properties {
+        property "sonar.projectName", "Spring Boot Example Gradle"
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.dynamicAnalysis", "reuseReports"
+        property "sonar.language", "java"
+        property "sonar.dependencyCheck.reportPath", "${buildDir}/reports/dependency-check-report.xml"
+        property "sonar.dependencyCheck.xmlReportPath", "${buildDir}/reports/dependency-check-report.xml"
+        property "sonar.dependencyCheck.htmlReportPath", "${buildDir}/reports/dependency-check-report.html"
+        property "sonar.dependencyCheck.summarize", "true"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}\\reports\\jacoco\\test\\jacocoTestReport.xml"
+
+    }
+}
 tasks.named('test') {
     useJUnitPlatform()
 }

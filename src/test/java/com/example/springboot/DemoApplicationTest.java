@@ -17,4 +17,11 @@ class DemoApplicationTests {
     void contextLoads() {
         assertEquals("com.example.springboot.DemoApplicationTests", this.getClass().getName());
     }
+
+
+    @Test
+    void main() {
+        assertDoesNotThrow(() -> DemoApplication.main(new String[]{}));
+    }
+
 }
