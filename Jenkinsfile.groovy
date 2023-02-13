@@ -12,17 +12,27 @@ pipeline {
                 bat './gradlew clean build'
             }
         }
+        stage('DependencyCheck') {
+            when {
+                not {
+                    daily()
+                }
+            }
+            steps {
+                bat './gradlew dependencyCheckUpdate dependencyCheckAnalyze'
+            }
+        }
         stage('SonarQube analysis') {
             steps {
                 withSonarQubeEnv(installationName: 'sonar') {
-                    bat './gradlew sonarqube -x dependencyCheckAnalyze'
+                    bat './gradlew sonarqube'
                 }
             }
         }
     }
     post {
         always {
-            junit '**/*.xml'
+            junit '**/test-results/**/*.xml'
         }
     }
 }
