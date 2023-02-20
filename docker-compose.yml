@@ -40,6 +40,37 @@ services:
       - sonarqube_db:/var/lib/postgresql
       - postgresql_data:/var/lib/postgresql/data
 
+
+  artifactory:
+    image: docker.bintray.io/jfrog/artifactory-oss:latest
+    container_name: artifactory
+    restart: always
+    ports:
+      - "8081:8081"
+      - "8082:8082"
+    volumes:
+      - jfrog:/opt/artifactory/var/:/var/opt/jfrog/artifactory
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    ports:
+      - "7070:7070"
+    environment:
+      - JENKINS_OPTS="--httpPort=7070"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+#  ssh-agent:
+#    image: jenkins/ssh-agent
+
+#  nexus3:
+#    image: sonatype/nexus3
+#    ports:
+#      - "8081:8081"
+#      - "8500:8500"
+#    volumes:
+#      - nexus3_data:/nexus-data
+#    restart: always
+
 volumes:
   postgresql_data:
   sonarqube_bundled-plugins:
@@ -48,3 +79,6 @@ volumes:
   sonarqube_db:
   sonarqube_extensions:
   my-db:
+  jfrog:
+  jenkins_home:
+  nexus3_data:
